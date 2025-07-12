@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache - فێربوونی بەرنامەسازی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Naskh Arabic', serif;
+            background-color: #f8fafc;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 5s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .code-block {
+            background-color: #1e293b;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #334155;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #475569;
+        }
+        
+        .language-tag {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background-color: #0ea5e9;
+            color: white;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">A</span>
+                </div>
+                <h1 class="text-2xl font-bold gradient-text">Apache</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8 space-x-reverse">
+                <a href="#home" class="nav-link text-gray-700 hover:text-blue-600">سەرەتا</a>
+                <a href="#html" class="nav-link text-gray-700 hover:text-blue-600">HTML</a>
+                <a href="#css" class="nav-link text-gray-700 hover:text-blue-600">CSS</a>
+                <a href="#javascript" class="nav-link text-gray-700 hover:text-blue-600">JavaScript</a>
+                <a href="#examples" class="nav-link text-gray-700 hover:text-blue-600">نمونەکان</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600">پەیوەندی</a>
+            </nav>
+            
+            <button class="md:hidden text-gray-700" id="mobile-menu-button">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white shadow-lg" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#home" class="py-2 text-gray-700 hover:text-blue-600 border-b border-gray-100">سەرەتا</a>
+                <a href="#html" class="py-2 text-gray-700 hover:text-blue-600 border-b border-gray-100">HTML</a>
+                <a href="#css" class="py-2 text-gray-700 hover:text-blue-600 border-b border-gray-100">CSS</a>
+                <a href="#javascript" class="py-2 text-gray-700 hover:text-blue-600 border-b border-gray-100">JavaScript</a>
+                <a href="#examples" class="py-2 text-gray-700 hover:text-blue-600 border-b border-gray-100">نمونەکان</a>
+                <a href="#contact" class="py-2 text-gray-700 hover:text-blue-600">پەیوەندی</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-blue-50 to-purple-50 py-20">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">فێربوونی بەرنامەسازی لەگەڵ <span class="gradient-text">Apache</span></h1>
+                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                    لێرە فێری هەموو بابەتەکانی بەرنامەسازی دەبیت لە HTML و CSS و JavaScript. هەموو کۆدەکان بە شێوازێکی  ڕوون و سادە پێشکەش دەکرێن بۆ تۆ.
+                </p>
+                <div class="flex space-x-4 space-x-reverse">
+                    <a href="#html" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">دەستپێبکە</a>
+                    <a href="#examples" class="bg-white hover:bg-gray-100 text-blue-600 px-6 py-3 rounded-lg font-medium border border-blue-600 transition duration-300">نمونەکان</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-full max-w-md">
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                    <div class="relative bg-white p-6 rounded-xl shadow-xl border border-gray-200">
+                        <div class="code-block">
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                            <span class="language-tag">HTML</span>
+                            <pre class="text-green-400 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ku"&gt;
+&lt;head&gt;
+    &lt;title&gt;سەرەتا&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;سڵاو جیهان!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HTML Section -->
+    <section id="html" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">HTML - زمانێکی نیشانەکردنی وێب</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">HTML بناغەی هەر وێبپەڕێکە. لێرە فێری هەموو نیشانە (تەگ)ە سەرەکییەکانی HTML دەبیت.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">چییە HTML؟</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        HTML زمانێکی نیشانەکردنی وێبە کە بۆ دروستکردنی پێکهاتەی سەرەکی وێبپەڕەکان بەکاردەهێنرێت. HTML لە تەگەکان پێکهاتووە کە پێکهاتەی وێبپەڕەکە دیاری دەکەن.
+                    </p>
+                    <div class="code-block mb-6">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">HTML</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;نموونەی HTML&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;سەرناو&lt;/h1&gt;
+    &lt;p&gt;بەڵگەی نموونەیی.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed">
+                        هەر تەگێکی HTML خاسیەتی جیای هەیە کە  ڕەفتاری ئەو تەگە دیاری دەکات. بۆ نموونە تەگی &lt;a&gt; بۆ دروستکردنی بەستەر بەکاردەهێنرێت.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">تەگە سەرەکییەکانی HTML</h3>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;html&gt;: ڕەگی بەڵگەی HTML</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;head&gt;: زانیاری مێتا و پەیوەندی بە بەڵگەکەوە</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;body&gt;: ناوەڕۆکی وێبپەڕەکە</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;h1&gt; تا &lt;h6&gt;: سەرناوە جیاوازەکان</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;p&gt;: بەڵگە</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-blue-100 text-blue-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">&lt;a&gt;: بەستەر</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">HTML</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;تەگە سەرەکییەکان&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;سەرناوی سەرەکی&lt;/h1&gt;
+    &lt;p&gt;بەڵگەی نموونەیی. &lt;a href="#"&gt;بەستەر&lt;/a&gt;.&lt;/p&gt;
+    &lt;img src="image.jpg" alt="وێنە"&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-blue-50 p-6 rounded-xl border border-blue-200">
+                <h3 class="text-xl font-semibold text-blue-800 mb-4">نمونەی کارکردنی HTML</h3>
+                <p class="text-blue-700 mb-4">ئەم کۆدەی خوارەوە پیشاندەدات کە چۆن HTML بەکاردەهێنرێت بۆ دروستکردنی پەڕەیەکی سادە:</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">HTML</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;پەڕەی نموونەیی&lt;/title&gt;
+    &lt;style&gt;
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background: #333;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        main {
+            padding: 20px;
+        }
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;h1&gt;سایتەکەم&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;nav&gt;
+        &lt;a href="#"&gt;سەرەتا&lt;/a&gt;
+        &lt;a href="#"&gt;بەرەوپێش&lt;/a&gt;
+        &lt;a href="#"&gt;دەربارە&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;main&gt;
+        &lt;h2&gt;بەخێربێن بۆ سایتەکەم&lt;/h2&gt;
+        &lt;p&gt;ئەمە پەڕەیەکی نموونەییە بۆ نیشاندانی کارکردنی HTML.&lt;/p&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;
+        &lt;p&gt;هەموو مافەکان پارێزراون © 2025&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-xl p-4 bg-white">
+                        <h4 class="text-lg font-medium text-gray-800 mb-3">ئەنجامی کۆدەکە:</h4>
+                        <div class="border rounded-lg overflow-hidden">
+                            <div class="bg-gray-100 p-2 flex items-center">
+                                <div class="flex space-x-2 mr-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">پەڕەی نموونەیی.html</div>
+                            </div>
+                            <div class="p-4">
+                                <header style="background: #4CAF50; color: white; padding: 1rem; text-align: center;">
+                                    <h1>سایتەکەم</h1>
+                                </header>
+                                <nav style="background: #333; padding: 0.5rem;">
+                                    <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">سەرەتا</a>
+                                    <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">بەرەوپێش</a>
+                                    <a href="#" style="color: white; margin: 0 10px; text-decoration: none;">دەربارە</a>
+                                </nav>
+                                <main style="padding: 20px;">
+                                    <h2>بەخێربێن بۆ سایتەکەم</h2>
+                                    <p>ئەمە پەڕەیەکی نموونەییە بۆ نیشاندانی کارکردنی HTML.</p>
+                                </main>
+                                <footer style="background: #333; color: white; text-align: center; padding: 1rem; position: relative; bottom: 0; width: 100%;">
+                                    <p>هەموو مافەکان پارێزراون © 2025</p>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CSS Section -->
+    <section id="css" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">CSS - شێوازەکانی پەڕە</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">CSS زمانێکە بۆ  ڕازاندنەوەی پەڕەکانی وێب. لێرە فێری هەموو بنەما سەرەکییەکانی CSS دەبیت.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">چییە CSS؟</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        CSS (Cascading Style Sheets) زمانێکە بۆ ڕازاندنەوەی پەڕەکانی وێب. CSS  ڕێگایەکە بۆ کۆنتڕۆڵکردنی شێواز و ڕووکاری پەڕەکانی وێب، لە نواندن و  ڕەنگ و قەبارە و شوێنی نیشانەکان.
+                    </p>
+                    <div class="code-block mb-6">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">CSS</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>/*  ڕەنگدانەوەی سەرەکی */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/*  ڕەنگدانەوەی سەرناو */
+h1 {
+    color: #4CAF50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/*  ڕەنگدانەوەی بەستەر */
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">بنەما سەرەکییەکانی CSS</h3>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Selectors: دیاریکردنی ئەو ئەمانەی کە دەتەوێت  ڕازاندنەوەیان بکەیت</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Properties: تایبەتمەندییەکانی  ڕازاندنەوە وەک ڕەنگ و قەبارە</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Values: نرخی تایبەتمەندییەکان</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Box Model: مۆدێلی سندوق کە پێکهاتووە لە margin, border, padding, و content</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-purple-100 text-purple-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Flexbox & Grid: سیستەمەکانی  ڕێکخستنی پێکهاتەکان لە پەڕەکەدا</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">CSS</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>/* مۆدێلی سندوق */
+.box {
+    width: 200px;
+    height: 200px;
+    background-color: #4CAF50;
+    padding: 20px;
+    border: 5px solid #333;
+    margin: 30px;
+}
+
+/* Flexbox */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-purple-50 p-6 rounded-xl border border-purple-200">
+                <h3 class="text-xl font-semibold text-purple-800 mb-4">نمونەی کارکردنی CSS</h3>
+                <p class="text-purple-700 mb-4">ئەم کۆدەی خوارەوە پیشاندەدات کە چۆن CSS بەکاردەهێنرێت بۆ  ڕازاندنەوەی پەڕەیەکی وێب:</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">CSS</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>/*  ڕەنگدانەوەی سەرەکی */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/*  ڕەنگدانەوەی سەرەوە */
+header {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ڕەنگدانەوەی ناوەڕۆک */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 20px;
+}
+
+/* ڕەنگدانەوەی کارتەکان */
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    color: #6e8efb;
+    margin-top: 0;
+}
+
+/* ڕەنگدانەوەی پێنجەرە */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/*  ڕەنگدانەوەی بەستەر */
+a {
+    color: #6e8efb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}</code></pre>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-xl p-4 bg-white">
+                        <h4 class="text-lg font-medium text-gray-800 mb-3">ئەنجامی کۆدەکە:</h4>
+                        <div class="border rounded-lg overflow-hidden">
+                            <div class="bg-gray-100 p-2 flex items-center">
+                                <div class="flex space-x-2 mr-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">style.css</div>
+                            </div>
+                            <div class="p-4">
+                                <header style="background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; padding: 1rem 0; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h1>پەڕەی  ڕازاوە</h1>
+                                </header>
+                                <main style="max-width: 1200px; margin: 2rem auto; padding: 0 20px;">
+                                    <div class="card" style="background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px;">
+                                        <h3 style="color: #6e8efb; margin-top: 0;">کارتی یەکەم</h3>
+                                        <p>ئەمە ناوەڕۆکی کارتەکەیە. کاتێک ماوس لەسەر دەبێت، بەرز دەبێتەوە.</p>
+                                    </div>
+                                    <div class="card" style="background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px;">
+                                        <h3 style="color: #6e8efb; margin-top: 0;">کارتی دووەم</h3>
+                                        <p>ئەمە ناوەڕۆکی کارتەکەی دووەمە. <a href="#" style="color: #6e8efb; text-decoration: none;">بەستەرێکی نموونەیی</a>.</p>
+                                    </div>
+                                </main>
+                                <footer style="background: #333; color: white; text-align: center; padding: 1rem 0; position: relative; bottom: 0; width: 100%;">
+                                    <p>هەموو مافەکان پارێزراون © 2025</p>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript Section -->
+    <section id="javascript" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">JavaScript - زمانێکی بەرنامەسازی</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">JavaScript زمانێکە بۆ دروستکردنی کارلێک لە نێوان بەکارهێنەر و وێبپەڕەکە. لێرە فێری بنەما سەرەکییەکانی JavaScript دەبیت.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">چییە JavaScript؟</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        JavaScript زمانێکی بەرنامەسازییە کە بە شێوەیەکی سەرەکی بۆ زیادکردنی کارلێکی بەکارهێنەر بۆ وێبپەڕەکان بەکاردەهێنرێت. JavaScript دەتوانێت پەڕەکە بە شێوەیەکی دینامیکی بگۆڕێت بەبێ ئەوەی پەڕەکە دووبارە باربکاتەوە.
+                    </p>
+                    <div class="code-block mb-6">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">JavaScript</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>// نموونەی سادەی JavaScript
+function salamDeyn() {
+    let nav = prompt("ناوت چییە؟");
+    if (nav) {
+        alert("سڵاو " + nav + "!");
+    } else {
+        alert("سڵاو کەسایەتی نەناسراو!");
+    }
+}
+
+// بانگکردنی فەنکشنەکە
+salamDeyn();</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">بنەما سەرەکییەکانی JavaScript</h3>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Variables: گۆڕاوەکان بۆ هەڵگرتنی زانیاری</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Functions: بلۆکەکانی کۆد کە دەتوانرێت بانگکرێن</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">Events: کارلێکەکانی بەکارهێنەر وەک کرتەکردن و مۆس ئۆڤەر</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">DOM: مۆدێلی بەرنامەی پەڕە بۆ دەستکاریکردنی HTML و CSS</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 p-1 rounded mr-2"><i class="fas fa-check"></i></span>
+                            <span class="text-gray-700">AJAX: دانانی داواکاری بۆ سێرڤەر بەبێ بارکردنەوەی پەڕە</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">JavaScript</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>// نموونەی DOM و Events
+document.addEventListener('DOMContentLoaded', function() {
+    // دەستکەوتن بە توخمێک
+    const button = document.getElementById('myButton');
+    const output = document.getElementById('output');
+    
+    // زیادکردنی گوێگرتنەوەی کرتە
+    button.addEventListener('click', function() {
+        output.textContent = 'تۆ کرتەت کرد!';
+        output.style.color = 'green';
+    });
+    
+    // نموونەی AJAX
+    fetch('https://api.example.com/data')
+        .then(response => response.json())
+        .then(data => {
+            console.log('داتاکە:', data);
+        })
+        .catch(error => {
+            console.error('هەڵە:', error);
+        });
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                <h3 class="text-xl font-semibold text-yellow-800 mb-4">نمونەی کارکردنی JavaScript</h3>
+                <p class="text-yellow-700 mb-4">ئەم کۆدەی خوارەوە پیشاندەدات کە چۆن JavaScript بەکاردەهێنرێت بۆ زیادکردنی کارلێک بۆ پەڕەیەکی وێب:</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                        <span class="language-tag">JavaScript</span>
+                        <pre class="text-green-400 overflow-x-auto"><code>// فەنکشنی کاتژمێری ڕاستەوخۆ
+function updateClock() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    document.getElementById('clock').textContent = timeString;
+}
+
+// فەنکشنی کۆنتەر
+let counter = 0;
+function incrementCounter() {
+    counter++;
+    document.getElementById('counter').textContent = counter;
+}
+
+// فەنکشنی گۆڕینی ڕەنگ
+function changeColor() {
+    const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#33FFF3'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    document.body.style.backgroundColor = randomColor;
+}
+
+// دامەزراندنی کاتژمێر
+setInterval(updateClock, 1000);
+updateClock(); // بانگکردنی یەکەم جار
+
+// زیادکردنی گوێگرتنەوەکان
+document.getElementById('incrementBtn').addEventListener('click', incrementCounter);
+document.getElementById('colorBtn').addEventListener('click', changeColor);</code></pre>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-xl p-4 bg-white">
+                        <h4 class="text-lg font-medium text-gray-800 mb-3">ئەنجامی کۆدەکە:</h4>
+                        <div class="border rounded-lg overflow-hidden">
+                            <div class="bg-gray-100 p-2 flex items-center">
+                                <div class="flex space-x-2 mr-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">script.js</div>
+                            </div>
+                            <div class="p-4 text-center">
+                                <div class="text-3xl font-mono mb-6" id="clockDemo">00:00:00</div>
+                                <div class="mb-6">
+                                    <p class="text-xl mb-2">کۆنتەر: <span id="counterDemo">0</span></p>
+                                    <button id="incrementBtnDemo" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">زیادکردنی کۆنتەر</button>
+                                </div>
+                                <button id="colorBtnDemo" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">گۆڕینی  ڕەنگی پاشبنەما</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">نمونەکانی کۆد</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">نمونە جیاوازەکانی کۆد بۆ تێگەیشتنێکی باشتر لە بەرنامەسازی وێب</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Example 1 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-code text-blue-600"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">فۆرمی پەیوەندی</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">فۆرمێکی سادەی پەیوەندی کە دەتوانرێت لە وێبسایتەکەت بەکاریبێنیت.</p>
+                        <div class="code-block mb-4">
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                            <span class="language-tag">HTML</span>
+                            <pre class="text-green-400 overflow-x-auto"><code>&lt;form class="space-y-4"&gt;
+    &lt;div&gt;
+        &lt;label for="name"&gt;ناو&lt;/label&gt;
+        &lt;input type="text" id="name" required&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for="email"&gt;ئیمێل&lt;/label&gt;
+        &lt;input type="email" id="email" required&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for="message"&gt;پەیام&lt;/label&gt;
+        &lt;textarea id="message" rows="4" required&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+    &lt;button type="submit"&gt;ناردن&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">بینینی نمونە &rarr;</a>
+                    </div>
+                </div>
+                
+                <!-- Example 2 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-palette text-purple-600"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">کارتی بەرهەم</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">کارتێکی جوان بۆ نیشاندانی بەرهەمەکان یان خزمەتگوزاریەکان.</p>
+                        <div class="code-block mb-4">
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                            <span class="language-tag">HTML/CSS</span>
+                            <pre class="text-green-400 overflow-x-auto"><code>&lt;div class="card"&gt;
+    &lt;img src="product.jpg" alt="بەرهەم"&gt;
+    &lt;div class="card-content"&gt;
+        &lt;h3&gt;ناوی بەرهەم&lt;/h3&gt;
+        &lt;p&gt;وەسفی کورت.&lt;/p&gt;
+        &lt;div class="price"&gt;$19.99&lt;/div&gt;
+        &lt;button&gt;زیادکردن بۆ سەبەتە&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 300px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.card-content {
+    padding: 15px;
+}
+.price {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+&lt;/style&gt;</code></pre>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">بینینی نمونە &rarr;</a>
+                    </div>
+                </div>
+                
+                <!-- Example 3 -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-sliders-h text-yellow-600"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">سلایدەری وێنە</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">سلایدەرێکی سادەی وێنە بە JavaScript.</p>
+                        <div class="code-block mb-4">
+                            <button class="copy-btn" onclick="copyCode(this)"><i class="fas fa-copy mr-1"></i>کۆپی</button>
+                            <span class="language-tag">JavaScript</span>
+                            <pre class="text-green-400 overflow-x-auto"><code>let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+function showSlide(n) {
+    slides.forEach(slide => {
+        slide.style.display = 'none';
+    });
+    currentSlide = (n + totalSlides) % totalSlides;
+    slides[currentSlide].style.display = 'block';
+}
+
+function nextSlide() {
+    showSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+    showSlide(currentSlide - 1);
+}
+
+// دامەزراندنی سلایدەر
+document.addEventListener('DOMContentLoaded', () => {
+    showSlide(0);
+    setInterval(nextSlide, 3000);
+});</code></pre>
+                        </div>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">بینینی نمونە &rarr;</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">هەموو نمونەکان ببینە</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 shadow-lg">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">پەیوەندی بە Apache</h2>
+                    <p class="text-lg text-gray-600">ئەگەر پرسیار یان پێشنیارێکت هەیە، تکایە پەیوەندیمان پێوەبکە.</p>
+                </div>
+                
+                <form class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 mb-2">ناوی تەواو</label>
+                        <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-300" required>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-gray-700 mb-2">ئیمێل</label>
+                        <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-300" required>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="subject" class="block text-gray-700 mb-2">بابەت</label>
+                        <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-300" required>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="message" class="block text-gray-700 mb-2">پەیام</label>
+                        <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-300" required></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2 flex justify-center">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition duration-300">ناردنی پەیام</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">A</span>
+                        </div>
+                        <h3 class="text-xl font-bold gradient-text">Apache</h3>
+                    </div>
+                    <p class="text-gray-400">Apache سەرچاوەیەکی خۆڕاییە بۆ فێربوونی بەرنامەسازی و دروستکردنی وێبسایت.</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">بەستەرەکان</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300">سەرەتا</a></li>
+                        <li><a href="#html" class="text-gray-400 hover:text-white transition duration-300">HTML</a></li>
+                        <li><a href="#css" class="text-gray-400 hover:text-white transition duration-300">CSS</a></li>
+                        <li><a href="#javascript" class="text-gray-400 hover:text-white transition duration-300">JavaScript</a></li>
+                        <li><a href="#examples" class="text-gray-400 hover:text-white transition duration-300">نمونەکان</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">سەرچاوەکان</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">بەڵگەنامە</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">فێرکارییەکان</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">کتێبخانەکان</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">داونەراوەکان</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">پەیوەندی</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">dlovanyunîs3@gmail.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">+964 876 391 2717</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>
+                            <span class="text-gray-400">هەولێر, هەرێمی کوردستان</span>
+                        </li>
+                    </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-300"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2025 Apache.All rights reserved</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">مەرجەکان</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">سیاسەتی تایبەتمەندی</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition duration-300">سیاسەتی کوکی</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="floating-btn bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition duration-300 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Copy Code Function
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.innerHTML = '<i class="fas fa-check mr-1"></i>کۆپی کراوە!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy mr-1"></i>کۆپی';
+                }, 2000);
+            });
+        }
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // JavaScript Example Functionality
+        // Clock
+        function updateClockDemo() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clockDemo').textContent = timeString;
+        }
+        
+        // Counter
+        let counterDemo = 0;
+        document.getElementById('incrementBtnDemo').addEventListener('click', () => {
+            counterDemo++;
+            document.getElementById('counterDemo').textContent = counterDemo;
+        });
+        
+        // Color Changer
+        document.getElementById('colorBtnDemo').addEventListener('click', () => {
+            const colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#33FFF3'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.backgroundColor = randomColor;
+        });
+        
+        // Initialize clock
+        setInterval(updateClockDemo, 1000);
+        updateClockDemo();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Initialize API (placeholder - replace with actual API implementation)
+        const apiKey = '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';
+        console.log('API Key initialized:', apiKey.substring(0, 10) + '...');
+    </script>
+</body>
+</html>
